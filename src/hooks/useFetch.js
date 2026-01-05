@@ -1,22 +1,46 @@
-import { useState, useEffect } from 'react';
- 
-    // Fetch movies from the API when the component mounts
-    // and update the state with the fetched data.
-    // This will be used in the MovieList component to display the list of movies.
+import { useState, useEffect, useCallback } from 'react';
 
-    export const useFetch = (apiPath) => {
-      const [data, setData] = useState([]);
-      const url = `https://api.themoviedb.org/3/${apiPath}?api_key=299dbc2257c90dccef0f8793240a189c`; // Ensure you have your API key in .env file
+export const useFetch = (apiPath, queryTerm = "") => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
 
+  const fetchMovies = useCallback(async (pageNum = 1, append = false) => {
+    setLoading(true);
+    const query = queryTerm ? `&query=${encodeURIComponent(queryTerm)}` : "";
+    const url = `https://api.themoviedb.org/3/${apiPath}?api_key=299dbc2257c90dccef0f8793240a189c&page=${pageNum}${query}`;
 
-    useEffect(() => {
-       async function fetchMovies() {
-       const response = await fetch(url); // Replace with your API endpoint
-       const json = await response.json();
-       setData(json.results); // Adjust based on your API response structure
-       }
-       fetchMovies();
-     }, [url])
-     return {data}
+    try {
+      const response = await fetch(url);
+      const json = await response.json();
+      if (append) {
+        setData(prev => [...prev, ...json.results]);
+      } else {
+        setData(json.results);
+      }
+      setHasMore(pageNum < json.total_pages);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [apiPath, queryTerm]);
 
-     }
+  useEffect(() => {
+    setData([]);
+    setPage(1);
+    setHasMore(true);
+    fetchMovies(1, false);
+  }, [apiPath, queryTerm, fetchMovies]);
+
+  const loadMore = () => {
+    if (!loading && hasMore) {
+      const nextPage = page + 1;
+      setPage(nextPage);
+      fetchMovies(nextPage, true);
+    }
+  };
+
+  return { data, loading, hasMore, loadMore };
+};
