@@ -1,8 +1,8 @@
 import {useState, useEffect} from 'react';
-import { useParams } from 'react-router-dom'; 
+import { useParams } from 'react-router-dom';
 import Backup from "../assets/images/backup.png"
 
-export const MovieDetails = () => {
+const MovieDetails = () => {
   const params = useParams();
   const [movie, setMovie] = useState({});
   const [videos, setVideos] = useState([]);
@@ -103,3 +103,5 @@ export const MovieDetails = () => {
     </main>
   )
 }
+
+export default MovieDetails;

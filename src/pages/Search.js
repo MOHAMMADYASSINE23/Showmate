@@ -5,7 +5,7 @@ import { useFetch } from "../hooks/useFetch";
 import { Cards } from "../components";
 import { SkeletonCard } from "../components/SkeletonCard";
 
-export const Search = ({apiPath = "search/movie"}) => {
+const Search = ({apiPath = "search/movie"}) => {
   const [searchParams] = useSearchParams();
   const queryTerm = searchParams.get("q") || "";
 
@@ -52,7 +52,8 @@ export const Search = ({apiPath = "search/movie"}) => {
       </section>
     </main>
   )
-
 }
+
+export default Search;
 
 

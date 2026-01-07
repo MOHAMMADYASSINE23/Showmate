@@ -1,6 +1,11 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { MovieList, MovieDetails, Search, PageNotFound } from "../pages";
+import { lazy, Suspense } from "react";
+
+const MovieList = lazy(() => import("../pages/MovieList"));
+const MovieDetails = lazy(() => import("../pages/MovieDetails"));
+const Search = lazy(() => import("../pages/Search"));
+const PageNotFound = lazy(() => import("../pages/PageNotFound"));
 
 export const AllRoutes = () => {
   const location = useLocation();
@@ -8,7 +13,8 @@ export const AllRoutes = () => {
   return (
     <div className="dark:bg-slate-800">
       <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
+        <Suspense fallback={<div className="flex justify-center items-center h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div></div>}>
+          <Routes location={location} key={location.pathname}>
           <Route path="" element={
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -80,6 +86,7 @@ export const AllRoutes = () => {
             </motion.div>
           } />
         </Routes>
+        </Suspense>
       </AnimatePresence>
     </div>
   )

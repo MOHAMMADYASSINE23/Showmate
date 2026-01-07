@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
+import { motion } from "framer-motion";
 import { useFetch } from "../hooks/useFetch";
 import { Cards } from "../components/Cards";
 import { SkeletonCard } from "../components/SkeletonCard";
 
-export const MovieList = ({apiPath}) => {
+const MovieList = ({apiPath}) => {
   const { data: movies, loading, hasMore, loadMore } = useFetch(apiPath);
   const { ref, inView } = useInView();
 
@@ -44,3 +45,5 @@ export const MovieList = ({apiPath}) => {
     </main>
   )
 }
+
+export default MovieList;

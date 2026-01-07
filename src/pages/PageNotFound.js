@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import PageNotFoundImage from "../assets/images/pagenotfound.png"
 import { Button } from "../components/Button";
 
-export const PageNotFound = () => {
+const PageNotFound = () => {
   return (
     <main>
       <section className="flex flex-col justify-center px-2">
@@ -21,5 +21,7 @@ export const PageNotFound = () => {
     </main>
   )
 }
+
+export default PageNotFound;
 
 
