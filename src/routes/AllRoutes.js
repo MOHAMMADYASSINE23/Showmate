@@ -5,6 +5,8 @@ import { lazy, Suspense } from "react";
 const MovieList = lazy(() => import("../pages/MovieList"));
 const MovieDetails = lazy(() => import("../pages/MovieDetails"));
 const Search = lazy(() => import("../pages/Search"));
+const Favorites = lazy(() => import("../pages/Favorites"));
+const Watchlist = lazy(() => import("../pages/Watchlist"));
 const PageNotFound = lazy(() => import("../pages/PageNotFound"));
 
 export const AllRoutes = () => {
@@ -73,6 +75,26 @@ export const AllRoutes = () => {
               transition={{ duration: 0.5 }}
             >
               <Search />
+            </motion.div>
+          } />
+          <Route path="favorites" element={
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Favorites />
+            </motion.div>
+          } />
+          <Route path="watchlist" element={
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Watchlist />
             </motion.div>
           } />
           <Route path="*" element={

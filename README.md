@@ -8,6 +8,7 @@ A modern React-based movie discovery application that allows users to browse, se
 - Search movies by title
 - View detailed movie information including cast, ratings, and overview
 - Watch movie trailers directly on the site
+- Create and manage personal favorites and watchlist
 - Responsive design with dark mode support
 - Fast and intuitive user interface built with Tailwind CSS
 
@@ -88,16 +89,20 @@ src/
 │   ├── Cards.js
 │   ├── Footer.js
 │   ├── Header.js
-│   └── ScrollToTop.js
+│   ├── ScrollToTop.js
+│   └── SkeletonCard.js
 ├── pages/               # Page components
+│   ├── Favorites.js
 │   ├── MovieDetails.js
 │   ├── MovieList.js
+│   ├── PageNotFound.js
 │   ├── Search.js
-│   └── PageNotFound.js
+│   └── Watchlist.js
 ├── hooks/               # Custom React hooks
 │   └── useFetch.js
 ├── routes/              # Routing configuration
 │   └── AllRoutes.js
+├── store/               # Redux store and slices
 ├── assets/              # Static assets
 └── App.js               # Main app component
 ```

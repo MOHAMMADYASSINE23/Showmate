@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
+
 import { useFetch } from "../hooks/useFetch";
 import { Cards } from "../components/Cards";
 import { SkeletonCard } from "../components/SkeletonCard";

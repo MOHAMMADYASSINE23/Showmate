@@ -51,8 +51,11 @@ describe('Header Component', () => {
 
   test('submits search form and navigates', () => {
     renderWithRouter(<Header />);
-    const input = screen.getAllByPlaceholderText('Search...')[0]; // Desktop input
-    const button = screen.getAllByRole('button', { name: /search/i })[0]; // Desktop search button
+    const toggleButton = screen.getByTestId('mobile-search-toggle');
+    fireEvent.click(toggleButton);
+
+    const input = screen.getByPlaceholderText('Search...');
+    const button = screen.getByRole('button', { name: /search/i });
 
     fireEvent.change(input, { target: { value: 'test movie' } });
     fireEvent.click(button);
