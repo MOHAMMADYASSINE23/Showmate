@@ -1,4 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
+
 import { useFetch } from '../useFetch';
 
 // Mock fetch globally
@@ -58,7 +59,7 @@ describe('useFetch Hook', () => {
   });
 
   test('handles search query', async () => {
-    const { result } = renderHook(() => useFetch('search/movie', 'test query'));
+    renderHook(() => useFetch('search/movie', 'test query'));
 
     // Wait for the effect to run
     await act(async () => {

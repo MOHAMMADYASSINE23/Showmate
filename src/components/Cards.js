@@ -4,11 +4,6 @@ import { memo } from "react";
 
 import Backup from "../assets/images/backup.png"
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
-};
-
 export const Cards = memo(({movie}) => {
   const { id, original_title, overview, poster_path } = movie;
   const image = poster_path ? `https://image.tmdb.org/t/p/w500/${poster_path}` : Backup ;

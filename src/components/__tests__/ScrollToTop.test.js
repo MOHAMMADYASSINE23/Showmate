@@ -1,5 +1,6 @@
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+
 import { ScrollToTop } from '../ScrollToTop';
 
 // Mock window methods
