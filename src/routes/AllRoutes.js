@@ -2,12 +2,12 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { lazy, Suspense } from "react";
 
-const MovieList = lazy(() => import("../pages/MovieList"));
-const MovieDetails = lazy(() => import("../pages/MovieDetails"));
-const Search = lazy(() => import("../pages/Search"));
+const MovieList = lazy(() => import("../pages/MovieList").then(module => ({ default: module.MovieList })));
+const MovieDetails = lazy(() => import("../pages/MovieDetails").then(module => ({ default: module.MovieDetails })));
+const Search = lazy(() => import("../pages/Search").then(module => ({ default: module.Search })));
 const Favorites = lazy(() => import("../pages/Favorites"));
 const Watchlist = lazy(() => import("../pages/Watchlist"));
-const PageNotFound = lazy(() => import("../pages/PageNotFound"));
+const PageNotFound = lazy(() => import("../pages/PageNotFound").then(module => ({ default: module.PageNotFound })));
 
 export const AllRoutes = () => {
   const location = useLocation();

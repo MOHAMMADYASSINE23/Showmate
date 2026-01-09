@@ -55,6 +55,6 @@ const Search = ({apiPath = "search/movie"}) => {
   )
 }
 
-export default Search;
+export { Search };
 
 

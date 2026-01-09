@@ -46,4 +46,4 @@ const MovieList = ({apiPath}) => {
   )
 }
 
-export default MovieList;
+export { MovieList };
