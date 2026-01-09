@@ -55,8 +55,9 @@ describe('Header Component', () => {
     const toggleButton = screen.getByTestId('mobile-search-toggle');
     fireEvent.click(toggleButton);
 
-    const input = screen.getByPlaceholderText('Search...');
-    const button = screen.getByRole('button', { name: /search/i });
+    const input = screen.getByTestId('mobile-search-input');
+    const buttons = screen.getAllByLabelText('Search');
+    const button = buttons[1]; // Mobile search button
 
     fireEvent.change(input, { target: { value: 'test movie' } });
     fireEvent.click(button);
