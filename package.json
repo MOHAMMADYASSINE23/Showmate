@@ -40,8 +40,7 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "@vitejs/plugin-react": "^5.0.4",
-    "@vitest/coverage-v8": "^3.2.4",
-    "autoprefixer": "^10.4.21",
+    "@vitest/coverage-v8": "^5.0.5",
     "cypress": "^15.8.2",
     "eslint": "^9.0.0",
     "eslint-plugin-import": "^2.32.0",
@@ -53,11 +52,11 @@
     "husky": "^9.1.7",
     "jsdom": "^26.1.0",
     "lint-staged": "^16.2.7",
-    "postcss": "^8.5.31",
     "prettier": "^3.7.4",
-    "tailwindcss": "^3.4.17",
+    "tailwindcss": "^4.3.3",
     "vite": "^7.1.12",
-    "vitest": "^3.2.4"
+    "vitest": "^5.0.5",
+    "@tailwindcss/vite": "^4.3.3"
   },
   "lint-staged": "{\"*.{js,jsx,ts,tsx,json,css,md}\": [\"prettier --write\", \"eslint --fix\"]}"
 }
