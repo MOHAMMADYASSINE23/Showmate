@@ -6,8 +6,8 @@ export async function fetchTmdb(path, params = {}) {
     throw new Error("Missing REACT_APP_TMDB_API_KEY. Add it to your local environment.");
   }
 
-  const normalizedPath = String(path).replace(/^\\/+/, "");
-  const url = new URL(`${TMDB_API_BASE_URL}/${normalizedPath}`);
+  const normalizedPath = String(path).replace(/^\/+/, "");
+  const url = new URL(TMDB_API_BASE_URL + "/" + normalizedPath);
   url.searchParams.set("api_key", apiKey);
 
   for (const [key, value] of Object.entries(params)) {
@@ -18,7 +18,7 @@ export async function fetchTmdb(path, params = {}) {
 
   const response = await fetch(url.toString());
   if (response.ok === false) {
-    throw new Error(`TMDB request failed with status ${response.status}`);
+    throw new Error("TMDB request failed with status " + response.status);
   }
 
   return response.json();
