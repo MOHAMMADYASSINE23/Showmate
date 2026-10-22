@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import { fetchTmdb } from '../lib/tmdb';
 import { useParams, Link } from 'react-router-dom';
 
 import Backup from "../assets/images/backup.png"
@@ -17,25 +18,20 @@ const MovieDetails = () => {
 
   useEffect(() => {
       async function fetchMovie() {
-      const response = await fetch(`https://api.themoviedb.org/3/movie/${params.id}?api_key=299dbc2257c90dccef0f8793240a189c`);
-      const json = await response.json();
+      const json = await fetchTmdb(`movie/${encodeURIComponent(params.id)}`);
       setMovie(json);
 
-      const videoResponse = await fetch(`https://api.themoviedb.org/3/movie/${params.id}/videos?api_key=299dbc2257c90dccef0f8793240a189c`);
-      const videoJson = await videoResponse.json();
+      const videoJson = await fetchTmdb(`movie/${encodeURIComponent(params.id)}/videos`);
       setVideos(videoJson.results);
 
-      const creditsResponse = await fetch(`https://api.themoviedb.org/3/movie/${params.id}/credits?api_key=299dbc2257c90dccef0f8793240a189c`);
-      const creditsJson = await creditsResponse.json();
+      const creditsJson = await fetchTmdb(`movie/${encodeURIComponent(params.id)}/credits`);
       setCast(creditsJson.cast.slice(0, 10)); // Top 10 cast members
       setCrew(creditsJson.crew.filter(person => person.job === 'Director' || person.job === 'Writer'));
 
-      const watchResponse = await fetch(`https://api.themoviedb.org/3/movie/${params.id}/watch/providers?api_key=299dbc2257c90dccef0f8793240a189c`);
-      const watchJson = await watchResponse.json();
+      const watchJson = await fetchTmdb(`movie/${encodeURIComponent(params.id)}/watch/providers`);
       setWatchProviders(watchJson.results || {});
 
-      const similarResponse = await fetch(`https://api.themoviedb.org/3/movie/${params.id}/similar?api_key=299dbc2257c90dccef0f8793240a189c&page=1`);
-      const similarJson = await similarResponse.json();
+      const similarJson = await fetchTmdb(`movie/${encodeURIComponent(params.id)}/similar`, { page: 1 });
       setSimilarMovies(similarJson.results.slice(0, 20)); // Top 20 similar movies
       }
       fetchMovie();
