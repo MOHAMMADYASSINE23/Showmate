@@ -26,8 +26,17 @@ jobs:
       - run: npm run lint
       - run: npm run test:coverage
       - run: npm run build
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          start: npm run dev -- --port 3000
-          wait-on: 'http://localhost:3000'
+      - name: Start Vite for Cypress
+        run: |
+          npm run dev -- --port 3000 > /tmp/showmate-vite.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:3000/ > /dev/null; then
+              echo "Vite is ready."
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/showmate-vite.log
+          exit 1
+      - name: Cypress smoke tests
+        run: npm run cypress:run
