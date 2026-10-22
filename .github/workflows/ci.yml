@@ -8,13 +8,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      REACT_APP_TMDB_API_KEY: ci-placeholder-tmdb-key
+      VITE_TMDB_API_KEY: ci-placeholder-tmdb-key
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
       - run: npm ci
       - name: Report full dependency audit
