@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { fetchTmdb } from '../lib/tmdb';
 
 // Simple in-memory cache
 const cache = new Map();
@@ -23,12 +24,11 @@ export const useFetch = (apiPath, queryTerm = "") => {
     }
 
     setLoading(true);
-    const query = queryTerm ? `&query=${encodeURIComponent(queryTerm)}` : "";
-    const url = `https://api.themoviedb.org/3/${apiPath}?api_key=299dbc2257c90dccef0f8793240a189c&page=${pageNum}${query}`;
+    const params = { page: pageNum };
+    if (queryTerm) params.query = queryTerm;
 
     try {
-      const response = await fetch(url);
-      const json = await response.json();
+      const json = await fetchTmdb(apiPath, params);
       cache.set(cacheKey, json);
       if (append) {
         setData(prev => [...prev, ...json.results]);
