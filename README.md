@@ -24,7 +24,7 @@ A modern React-based movie discovery application that allows users to browse, se
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
+- Node.js 20 or newer
 - npm or yarn
 - TMDB API Key (get one from [TMDB](https://www.themoviedb.org/settings/api))
 
@@ -38,12 +38,12 @@ A modern React-based movie discovery application that allows users to browse, se
 
 2. Install dependencies:
    ```bash
-   npm install
+   npm ci
    ```
 
-3. Create a `.env` file in the root directory and add your TMDB API key:
+3. Copy `.env.example` to `.env.local` and add your TMDB API key:
    ```
-   REACT_APP_TMDB_API_KEY=your_api_key_here
+   REACT_APP_TMDB_API_KEY=your-tmdb-api-key
    ```
 
 4. Start the development server:
@@ -59,6 +59,10 @@ A modern React-based movie discovery application that allows users to browse, se
 - `npm run build` - Builds the app for production
 - `npm test` - Launches the test runner
 - `npm run eject` - Ejects from Create React App (not recommended)
+
+## API key note
+
+The TMDB v3 key is used by a browser-based Create React App, so it is visible in the compiled client bundle. Keep it in an environment variable to avoid committing it, restrict usage where TMDB supports it, and rotate it if it was exposed unexpectedly. Do not put server-side secrets in any `REACT_APP_*` variable.
 
 ## Deployment
 
