@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { fetchTmdb } from "../lib/tmdb";
 
 import { Cards } from "../components/Cards";
 import { SkeletonCard } from "../components/SkeletonCard";
@@ -17,8 +18,7 @@ const Favorites = () => {
 
       try {
         const moviePromises = favorites.map(id =>
-          fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=299dbc2257c90dccef0f8793240a189c`)
-            .then(res => res.json())
+          fetchTmdb(`movie/${encodeURIComponent(id)}`)
         );
         const movieData = await Promise.all(moviePromises);
         setMovies(movieData);
