@@ -1,9 +1,9 @@
 const TMDB_API_BASE_URL = "https://api.themoviedb.org/3";
 
 export async function fetchTmdb(path, params = {}) {
-  const apiKey = process.env.REACT_APP_TMDB_API_KEY;
+  const apiKey = import.meta.env.VITE_TMDB_API_KEY;
   if (!apiKey) {
-    throw new Error("Missing REACT_APP_TMDB_API_KEY. Add it to your local environment.");
+    throw new Error("Missing VITE_TMDB_API_KEY. Add it to your local environment.");
   }
 
   const normalizedPath = String(path).replace(/^\/+/, "");
