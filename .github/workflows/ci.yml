@@ -7,19 +7,36 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      VITE_TMDB_API_KEY: ci-placeholder-tmdb-key
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22'
           cache: 'npm'
       - run: npm ci
+      - name: Report full dependency audit
+        run: |
+          npm audit --json > npm-audit.json || true
+          node -e 'const a = require("./npm-audit.json"); console.log("Full dependency audit:", JSON.stringify(a.metadata?.vulnerabilities || a.error || {}, null, 2)); console.log("Findings:", JSON.stringify(Object.entries(a.vulnerabilities || {}).map(([name, v]) => ({name, severity: v.severity, isDirect: v.isDirect, range: v.range, fixAvailable: v.fixAvailable})), null, 2))'
+      - name: Audit production dependencies
+        run: npm audit --omit=dev
       - run: npm run lint
       - run: npm run test:coverage
       - run: npm run build
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          start: npm start
-          wait-on: 'http://localhost:3000'
+      - name: Start Vite for Cypress
+        run: |
+          npm run dev -- --port 3000 > /tmp/showmate-vite.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:3000/ > /dev/null; then
+              echo "Vite is ready."
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/showmate-vite.log
+          exit 1
+      - name: Cypress smoke tests
+        run: npm run cypress:run

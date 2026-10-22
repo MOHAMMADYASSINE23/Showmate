@@ -3,7 +3,7 @@ import { renderHook, act } from '@testing-library/react';
 import { useFetch } from '../useFetch';
 
 // Mock fetch globally
-global.fetch = jest.fn();
+global.fetch = vi.fn();
 
 const mockMovies = [
   { id: 1, title: 'Movie 1' },
@@ -20,7 +20,7 @@ describe('useFetch Hook', () => {
   beforeEach(() => {
     global.fetch.mockClear();
     global.fetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockResponse)
+      json: vi.fn().mockResolvedValue(mockResponse)
     });
   });
 
@@ -67,13 +67,13 @@ describe('useFetch Hook', () => {
     });
 
     expect(global.fetch).toHaveBeenCalledWith(
-      expect.stringContaining('query=test%20query')
+      expect.stringContaining('query=test+query')
     );
   });
 
   test('stops loading when no more pages', async () => {
     global.fetch.mockResolvedValueOnce({
-      json: jest.fn().mockResolvedValue({
+      json: vi.fn().mockResolvedValue({
         results: mockMovies,
         total_pages: 1,
         page: 1

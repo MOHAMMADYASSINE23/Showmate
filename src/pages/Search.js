@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useInView } from "react-intersection-observer";
+import { useInView } from "../hooks/useInView";
 
 import { useFetch } from "../hooks/useFetch";
 import { Cards } from "../components";
