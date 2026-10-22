@@ -9,7 +9,7 @@ describe("fetchTmdb", () => {
   test("adds the API key and encodes query parameters", async () => {
     global.fetch.mockResolvedValue({
       ok: true,
-      json: jest.fn().mockResolvedValue({ results: [] }),
+      json: vi.fn().mockResolvedValue({ results: [] }),
     });
 
     await fetchTmdb("search/movie", { query: "Star Wars", page: 2 });
