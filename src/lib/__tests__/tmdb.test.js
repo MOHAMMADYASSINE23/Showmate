@@ -3,7 +3,7 @@ import { fetchTmdb } from "../tmdb";
 describe("fetchTmdb", () => {
   beforeEach(() => {
     global.fetch.mockReset();
-    process.env.REACT_APP_TMDB_API_KEY = "test-tmdb-api-key";
+    vi.stubEnv("VITE_TMDB_API_KEY", "test-tmdb-api-key");
   });
 
   test("adds the API key and encodes query parameters", async () => {
@@ -23,9 +23,9 @@ describe("fetchTmdb", () => {
   });
 
   test("throws a useful error when the key is missing", async () => {
-    delete process.env.REACT_APP_TMDB_API_KEY;
+    vi.stubEnv("VITE_TMDB_API_KEY", "");
 
-    await expect(fetchTmdb("movie/popular")).rejects.toThrow("Missing REACT_APP_TMDB_API_KEY");
+    await expect(fetchTmdb("movie/popular")).rejects.toThrow("Missing VITE_TMDB_API_KEY");
     expect(global.fetch).not.toHaveBeenCalled();
   });
 
