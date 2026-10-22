@@ -1,130 +1,44 @@
-# Showmate - Movie Discovery App
+# Showmate
 
-A modern React-based movie discovery application that allows users to browse, search, and explore movies using The Movie Database (TMDB) API. Features include movie details, video trailers, and a responsive design.
+Showmate is a responsive movie discovery app built with React, React Router, Tailwind CSS, and Vite. It uses The Movie Database (TMDB) for movie data and lets visitors browse titles and maintain favorites/watchlists in the browser.
 
 ## Features
 
-- Browse popular, top-rated, and upcoming movies
-- Search movies by title
-- View detailed movie information including cast, ratings, and overview
-- Watch movie trailers directly on the site
-- Create and manage personal favorites and watchlist
-- Responsive design with dark mode support
-- Fast and intuitive user interface built with Tailwind CSS
+- Browse trending, popular, top-rated, and upcoming movies.
+- Search movies and view details, trailers, credits, streaming providers, and similar titles.
+- Keep favorites and a watchlist in browser storage.
+- Responsive layout and skeleton loading states.
 
-## Tech Stack
+## Requirements
 
-- **Frontend**: React 19, React Router DOM
-- **Styling**: Tailwind CSS
-- **API**: The Movie Database (TMDB) API
-- **Build Tool**: Create React App
-- **Deployment**: Vercel/Netlify
+- Node.js 22.12 or newer
+- npm
+- A TMDB v3 API key
 
-## Getting Started
+## Local setup
 
-### Prerequisites
-
-- Node.js 20 or newer
-- npm or yarn
-- TMDB API Key (get one from [TMDB](https://www.themoviedb.org/settings/api))
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/MOHAMMADYASSINE23/Showmate.git
-   cd Showmate
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm ci
-   ```
-
-3. Copy `.env.example` to `.env.local` and add your TMDB API key:
-   ```
-   REACT_APP_TMDB_API_KEY=your-tmdb-api-key
-   ```
-
-4. Start the development server:
-   ```bash
-   npm start
-   ```
-
-   Open [http://localhost:3000](http://localhost:3000) to view the app.
-
-## Available Scripts
-
-- `npm start` - Runs the app in development mode
-- `npm run build` - Builds the app for production
-- `npm test` - Launches the test runner
-- `npm run eject` - Ejects from Create React App (not recommended)
-
-## API key note
-
-The TMDB v3 key is used by a browser-based Create React App, so it is visible in the compiled client bundle. Keep it in an environment variable to avoid committing it, restrict usage where TMDB supports it, and rotate it if it was exposed unexpectedly. Do not put server-side secrets in any `REACT_APP_*` variable.
-
-## Deployment
-
-### Vercel (Recommended)
-
-1. Sign up for a free account at [Vercel](https://vercel.com)
-2. Connect your GitHub account
-3. Import the Showmate repository
-4. Add environment variables in Vercel's dashboard:
-   - `REACT_APP_TMDB_API_KEY` = your TMDB API key
-5. Deploy!
-
-### Netlify
-
-1. Sign up for a free account at [Netlify](https://netlify.com)
-2. Connect your GitHub repository
-3. Set build command to `npm run build`
-4. Set publish directory to `build`
-5. Add environment variables in Netlify's dashboard
-6. Deploy!
-
-## Project Structure
-
-```
-src/
-├── components/          # Reusable UI components
-│   ├── Button.js
-│   ├── Cards.js
-│   ├── Footer.js
-│   ├── Header.js
-│   ├── ScrollToTop.js
-│   └── SkeletonCard.js
-├── pages/               # Page components
-│   ├── Favorites.js
-│   ├── MovieDetails.js
-│   ├── MovieList.js
-│   ├── PageNotFound.js
-│   ├── Search.js
-│   └── Watchlist.js
-├── hooks/               # Custom React hooks
-│   └── useFetch.js
-├── routes/              # Routing configuration
-│   └── AllRoutes.js
-├── store/               # Redux store and slices
-├── assets/              # Static assets
-└── App.js               # Main app component
+```bash
+npm ci
+cp .env.example .env.local
+npm run dev
 ```
 
-## Contributing
+Set `VITE_TMDB_API_KEY` in `.env.local`. Restart the Vite server after changing environment variables.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+**API key note:** Vite embeds `VITE_*` values in the browser bundle. The TMDB key is public client configuration, not a server secret. Restrict usage where supported and rotate the key if it was exposed unexpectedly. Never put server-side credentials in a `VITE_*` variable.
+
+## Quality checks
+
+```bash
+npm ci
+npm run lint
+npm test
+npm run build
+npm audit --omit=dev
+```
+
+GitHub Actions runs dependency auditing, lint, unit tests, production build, and Cypress smoke tests.
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
-
-## Acknowledgments
-
-- [The Movie Database (TMDB)](https://www.themoviedb.org/) for providing the movie data API
-- [Tailwind CSS](https://tailwindcss.com/) for the styling framework
-- [React](https://reactjs.org/) for the frontend library
+MIT. See [LICENSE](LICENSE).
