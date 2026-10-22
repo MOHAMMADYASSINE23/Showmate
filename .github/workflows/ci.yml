@@ -14,9 +14,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
       - run: npm ci
+      - name: Report full dependency audit
+        run: |
+          npm audit --json > npm-audit.json || true
+          node -e 'const a = require("./npm-audit.json"); console.log("Full dependency audit:", JSON.stringify(a.metadata?.vulnerabilities || a.error || {}, null, 2))'
+      - name: Audit production dependencies
+        run: npm audit --omit=dev
       - run: npm run lint
       - run: npm run test:coverage
       - run: npm run build
