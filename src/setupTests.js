@@ -4,5 +4,7 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 
+process.env.REACT_APP_TMDB_API_KEY = 'test-tmdb-api-key';
+
 // Mock fetch globally
 global.fetch = jest.fn();
