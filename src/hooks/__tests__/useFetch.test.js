@@ -67,7 +67,7 @@ describe('useFetch Hook', () => {
     });
 
     expect(global.fetch).toHaveBeenCalledWith(
-      expect.stringContaining('query=test%20query')
+      expect.stringContaining('query=test%2Bquery')
     );
   });
 
