@@ -7,6 +7,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      REACT_APP_TMDB_API_KEY: ci-placeholder-tmdb-key
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
