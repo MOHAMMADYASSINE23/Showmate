@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useInView } from "react-intersection-observer";
+import { useInView } from "../hooks/useInView";
 
 import { useFetch } from "../hooks/useFetch";
 import { Cards } from "../components/Cards";
