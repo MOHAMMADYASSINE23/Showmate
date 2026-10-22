@@ -4,9 +4,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { ScrollToTop } from '../ScrollToTop';
 
 // Mock window methods
-const mockScrollTo = jest.fn();
-const mockAddEventListener = jest.fn();
-const mockRemoveEventListener = jest.fn();
+const mockScrollTo = vi.fn();
+const mockAddEventListener = vi.fn();
+const mockRemoveEventListener = vi.fn();
 
 Object.defineProperty(window, 'scrollTo', {
   value: mockScrollTo,
