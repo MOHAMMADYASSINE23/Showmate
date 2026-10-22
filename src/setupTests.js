@@ -1,10 +1,4 @@
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/vitest';
 
-process.env.REACT_APP_TMDB_API_KEY = 'test-tmdb-api-key';
-
-// Mock fetch globally
-global.fetch = jest.fn();
+vi.stubEnv('VITE_TMDB_API_KEY', 'test-tmdb-api-key');
+globalThis.fetch = vi.fn();
