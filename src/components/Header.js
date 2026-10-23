@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
 import Logo from "../assets/logo.png";
+import { DARK_MODE_KEY, readBoolean, writeBoolean } from "../lib/storage";
 
 export const Header = () => {
   const [hidden, setHidden] = useState(true);
-  const [darkMode, setDarkMode] = useState(JSON.parse(localStorage.getItem('darkMode')) || false);
+  const [darkMode, setDarkMode] = useState(() => readBoolean(DARK_MODE_KEY, false));
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -17,8 +18,9 @@ export const Header = () => {
   }, [darkMode]);
 
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    localStorage.setItem('darkMode', JSON.stringify(!darkMode));
+    const nextDarkMode = !darkMode;
+    setDarkMode(nextDarkMode);
+    writeBoolean(DARK_MODE_KEY, nextDarkMode);
   };
 
   const navigate = useNavigate();

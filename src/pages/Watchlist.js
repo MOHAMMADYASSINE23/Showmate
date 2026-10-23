@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchTmdb } from "../lib/tmdb";
+import { WATCHLIST_KEY, readIdList } from "../lib/storage";
 
 import { Cards } from "../components/Cards";
 import { SkeletonCard } from "../components/SkeletonCard";
@@ -10,7 +11,7 @@ const Watchlist = () => {
 
   useEffect(() => {
     const fetchWatchlist = async () => {
-      const watchlist = JSON.parse(localStorage.getItem('movieWatchlist') || '[]');
+      const watchlist = readIdList(WATCHLIST_KEY);
       if (watchlist.length === 0) {
         setLoading(false);
         return;
