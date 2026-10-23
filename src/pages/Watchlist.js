@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchTmdb } from "../lib/tmdb";
 import { WATCHLIST_KEY, readIdList } from "../lib/storage";
+import { fetchSavedMovies } from "../lib/savedMovies";
 
 import { Cards } from "../components/Cards";
 import { SkeletonCard } from "../components/SkeletonCard";
@@ -18,13 +19,12 @@ const Watchlist = () => {
       }
 
       try {
-        const moviePromises = watchlist.map(id =>
-          fetchTmdb(`movie/${encodeURIComponent(id)}`)
+        const movieData = await fetchSavedMovies(watchlist, (id) =>
+          fetchTmdb(`movie/${id}`),
         );
-        const movieData = await Promise.all(moviePromises);
         setMovies(movieData);
       } catch (error) {
-        console.error('Error fetching watchlist:', error);
+        console.error("Error fetching watchlist:", error);
       } finally {
         setLoading(false);
       }
@@ -38,7 +38,11 @@ const Watchlist = () => {
       <main>
         <section className="max-w-7xl mx-auto py-7">
           <div className="flex justify-start flex-wrap other:justify-evenly">
-            {Array(8).fill(0).map((_, i) => <SkeletonCard key={i} />)}
+            {Array(8)
+              .fill(0)
+              .map((_, i) => (
+                <SkeletonCard key={i} />
+              ))}
           </div>
         </section>
       </main>
@@ -48,9 +52,13 @@ const Watchlist = () => {
   return (
     <main>
       <section className="max-w-7xl mx-auto py-7">
-        <h1 className="text-3xl font-bold mb-4 text-center lg:text-left">My Watchlist</h1>
+        <h1 className="text-3xl font-bold mb-4 text-center lg:text-left">
+          My Watchlist
+        </h1>
         {movies.length === 0 ? (
-          <p className="text-center text-gray-500 dark:text-gray-400">No movies in watchlist yet. Add some from movie details!</p>
+          <p className="text-center text-gray-500 dark:text-gray-400">
+            No movies in watchlist yet. Add some from movie details!
+          </p>
         ) : (
           <div className="flex justify-start flex-wrap other:justify-evenly">
             {movies.map((movie) => (
