@@ -1,6 +1,8 @@
 export async function fetchSavedMovies(ids, fetchMovie) {
   const results = await Promise.allSettled(
-    ids.map((id) => fetchMovie(encodeURIComponent(id))),
+    ids.map((id) =>
+      Promise.resolve().then(() => fetchMovie(encodeURIComponent(id))),
+    ),
   );
 
   return results
