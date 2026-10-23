@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchTmdb } from "../lib/tmdb";
+import { FAVORITES_KEY, readIdList } from "../lib/storage";
 
 import { Cards } from "../components/Cards";
 import { SkeletonCard } from "../components/SkeletonCard";
@@ -10,7 +11,7 @@ const Favorites = () => {
 
   useEffect(() => {
     const fetchFavorites = async () => {
-      const favorites = JSON.parse(localStorage.getItem('movieFavorites') || '[]');
+      const favorites = readIdList(FAVORITES_KEY);
       if (favorites.length === 0) {
         setLoading(false);
         return;
