@@ -2,7 +2,8 @@ import {useState, useEffect} from 'react';
 import { fetchTmdb } from '../lib/tmdb';
 import { useParams, Link } from 'react-router-dom';
 
-import Backup from "../assets/images/backup.png"
+import Backup from "../assets/images/backup.png";
+import { FAVORITES_KEY, WATCHLIST_KEY, readIdList, writeIdList } from "../lib/storage";
 
 const MovieDetails = () => {
   const params = useParams();
@@ -38,8 +39,8 @@ const MovieDetails = () => {
   }, [params.id]);
 
   useEffect(() => {
-    const favorites = JSON.parse(localStorage.getItem('movieFavorites') || '[]');
-    const watchlist = JSON.parse(localStorage.getItem('movieWatchlist') || '[]');
+    const favorites = readIdList(FAVORITES_KEY);
+    const watchlist = readIdList(WATCHLIST_KEY);
     setIsFavorite(favorites.includes(params.id));
     setIsInWatchlist(watchlist.includes(params.id));
   }, [params.id]);
@@ -52,7 +53,7 @@ const MovieDetails = () => {
     } else {
       newFavorites = [...favorites, params.id];
     }
-    localStorage.setItem('movieFavorites', JSON.stringify(newFavorites));
+    writeIdList(FAVORITES_KEY, newFavorites);
     setIsFavorite(!isFavorite);
   };
 
@@ -64,7 +65,7 @@ const MovieDetails = () => {
     } else {
       newWatchlist = [...watchlist, params.id];
     }
-    localStorage.setItem('movieWatchlist', JSON.stringify(newWatchlist));
+    writeIdList(WATCHLIST_KEY, newWatchlist);
     setIsInWatchlist(!isInWatchlist);
   };
 
