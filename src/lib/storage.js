@@ -25,7 +25,7 @@ export function readIdList(key) {
           (typeof id === "string" && id.trim().length > 0) ||
           (typeof id === "number" && Number.isSafeInteger(id) && id >= 0),
       )
-      .map(String);
+      .map((id) => (typeof id === "string" ? id.trim() : String(id)));
 
     return [...new Set(ids)];
   } catch {
