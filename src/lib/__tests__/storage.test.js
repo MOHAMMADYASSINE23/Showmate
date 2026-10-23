@@ -1,6 +1,7 @@
 import {
   DARK_MODE_KEY,
   FAVORITES_KEY,
+  WATCHLIST_KEY,
   readBoolean,
   readIdList,
   writeBoolean,
