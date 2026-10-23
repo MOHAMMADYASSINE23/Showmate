@@ -13,6 +13,18 @@ describe("fetchSavedMovies", () => {
     ]);
   });
 
+  test("isolates synchronous lookup errors as well as rejected promises", async () => {
+    const fetchMovie = (id) => {
+      if (id === "broken") throw new Error("Invalid lookup");
+      return { id: Number(id), title: `Movie ${id}` };
+    };
+
+    await expect(fetchSavedMovies(["12", "broken", "34"], fetchMovie)).resolves.toEqual([
+      { id: 12, title: "Movie 12" },
+      { id: 34, title: "Movie 34" },
+    ]);
+  });
+
   test("returns an empty list when no saved IDs exist", async () => {
     const fetchMovie = vi.fn();
 
