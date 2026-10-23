@@ -25,7 +25,7 @@ describe("safe browser storage helpers", () => {
       WATCHLIST_KEY,
       JSON.stringify([" 123 ", "", null, {}, 42, -1, "123"]),
     );
-    expect(readIdList(WATCHLIST_KEY)).toEqual([" 123 ", "42", "123"]);
+    expect(readIdList(WATCHLIST_KEY)).toEqual(["123", "42"]);
   });
 
   test("writes unique valid IDs as strings", () => {
