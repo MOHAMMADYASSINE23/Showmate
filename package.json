@@ -57,5 +57,8 @@
     "vitest": "^5.0.5",
     "@tailwindcss/vite": "^4.3.3"
   },
-  "lint-staged": "{\"*.{js,jsx,ts,tsx,json,css,md}\": [\"prettier --write\", \"eslint --fix\"]}"
+  "lint-staged": "{\"*.{js,jsx,ts,tsx,json,css,md}\": [\"prettier --write\", \"eslint --fix\"]}",
+  "overrides": {
+    "zod": "4.6.7"
+  }
 }
