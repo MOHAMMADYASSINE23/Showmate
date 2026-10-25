@@ -30,7 +30,6 @@ describe('useFetch Hook', () => {
     expect(result.current.loading).toBe(true);
     expect(result.current.data).toEqual([]);
 
-    // Wait for the effect to run
     await act(async () => {
       await new Promise(resolve => setTimeout(resolve, 0));
     });
@@ -43,7 +42,6 @@ describe('useFetch Hook', () => {
   test('loads more data', async () => {
     const { result } = renderHook(() => useFetch('movie/popular'));
 
-    // Wait for initial load
     await act(async () => {
       await new Promise(resolve => setTimeout(resolve, 0));
     });
@@ -61,7 +59,6 @@ describe('useFetch Hook', () => {
   test('handles search query', async () => {
     renderHook(() => useFetch('search/movie', 'test query'));
 
-    // Wait for the effect to run
     await act(async () => {
       await new Promise(resolve => setTimeout(resolve, 0));
     });
@@ -82,11 +79,51 @@ describe('useFetch Hook', () => {
 
     const { result } = renderHook(() => useFetch('movie/popular'));
 
-    // Wait for the effect to run
     await act(async () => {
       await new Promise(resolve => setTimeout(resolve, 0));
     });
 
     expect(result.current.hasMore).toBe(false);
+  });
+
+  test('ignores an older search response when a newer query has already loaded', async () => {
+    let resolveOldRequest;
+    global.fetch
+      .mockImplementationOnce(() => new Promise(resolve => {
+        resolveOldRequest = resolve;
+      }))
+      .mockResolvedValueOnce({
+        json: vi.fn().mockResolvedValue({
+          results: [{ id: 9, title: 'New query result' }],
+          total_pages: 1,
+          page: 1
+        })
+      });
+
+    const { result, rerender } = renderHook(
+      ({ query }) => useFetch('search/movie', query),
+      { initialProps: { query: 'old query' } }
+    );
+
+    await act(async () => {
+      rerender({ query: 'new query' });
+      await new Promise(resolve => setTimeout(resolve, 0));
+    });
+
+    expect(result.current.data).toEqual([{ id: 9, title: 'New query result' }]);
+
+    await act(async () => {
+      resolveOldRequest({
+        json: vi.fn().mockResolvedValue({
+          results: [{ id: 1, title: 'Stale result' }],
+          total_pages: 1,
+          page: 1
+        })
+      });
+      await new Promise(resolve => setTimeout(resolve, 0));
+    });
+
+    expect(result.current.data).toEqual([{ id: 9, title: 'New query result' }]);
+    expect(result.current.loading).toBe(false);
   });
 });
