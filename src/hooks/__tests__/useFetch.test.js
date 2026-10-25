@@ -126,4 +126,28 @@ describe('useFetch Hook', () => {
     expect(result.current.data).toEqual([{ id: 9, title: 'New query result' }]);
     expect(result.current.loading).toBe(false);
   });
+
+  test('does not append a stale page after changing the query', async () => {
+    let resolveOld;
+    const { result, rerender } = renderHook(
+      ({ query }) => useFetch('search/movie', query),
+      { initialProps: { query: 'first' } }
+    );
+    await act(async () => { await new Promise(resolve => setTimeout(resolve, 0)); });
+    global.fetch.mockImplementationOnce(() => new Promise(resolve => { resolveOld = resolve; }));
+    act(() => result.current.loadMore());
+    global.fetch.mockResolvedValueOnce({
+      json: vi.fn().mockResolvedValue({ results: [{ id: 99, title: 'Latest' }], total_pages: 1, page: 1 })
+    });
+    await act(async () => {
+      rerender({ query: 'second' });
+      await new Promise(resolve => setTimeout(resolve, 0));
+    });
+    await act(async () => {
+      resolveOld({ json: vi.fn().mockResolvedValue({ results: [{ id: 2, title: 'Stale' }], total_pages: 3, page: 2 }) });
+      await new Promise(resolve => setTimeout(resolve, 0));
+    });
+    expect(result.current.data).toEqual([{ id: 99, title: 'Latest' }]);
+  });
+
 });
