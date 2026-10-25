@@ -10,9 +10,10 @@ export const useFetch = (apiPath, queryTerm = "") => {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
 
-  const fetchMovies = useCallback(async (pageNum = 1, append = false) => {
+  const fetchMovies = useCallback(async (pageNum = 1, append = false, isCurrent = () => true) => {
     const cacheKey = `${apiPath}_${queryTerm}_${pageNum}`;
     if (cache.has(cacheKey) && process.env.NODE_ENV !== 'test') {
+      if (!isCurrent()) return;
       const cachedData = cache.get(cacheKey);
       if (append) {
         setData(prev => [...prev, ...cachedData.results]);
@@ -23,6 +24,7 @@ export const useFetch = (apiPath, queryTerm = "") => {
       return;
     }
 
+    if (!isCurrent()) return;
     setLoading(true);
     const params = { page: pageNum };
     if (queryTerm) params.query = queryTerm;
@@ -30,6 +32,8 @@ export const useFetch = (apiPath, queryTerm = "") => {
     try {
       const json = await fetchTmdb(apiPath, params);
       cache.set(cacheKey, json);
+      if (!isCurrent()) return;
+
       if (append) {
         setData(prev => [...prev, ...json.results]);
       } else {
@@ -37,17 +41,22 @@ export const useFetch = (apiPath, queryTerm = "") => {
       }
       setHasMore(pageNum < json.total_pages);
     } catch (error) {
-      console.error("Error fetching movies:", error);
+      if (isCurrent()) console.error("Error fetching movies:", error);
     } finally {
-      setLoading(false);
+      if (isCurrent()) setLoading(false);
     }
   }, [apiPath, queryTerm]);
 
   useEffect(() => {
+    let cancelled = false;
     setData([]);
     setPage(1);
     setHasMore(true);
-    fetchMovies(1, false);
+    fetchMovies(1, false, () => !cancelled);
+
+    return () => {
+      cancelled = true;
+    };
   }, [apiPath, queryTerm, fetchMovies]);
 
   const loadMore = () => {
