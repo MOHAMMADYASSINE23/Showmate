@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { fetchTmdb } from '../lib/tmdb';
 
 // Simple in-memory cache
@@ -9,6 +9,7 @@ export const useFetch = (apiPath, queryTerm = "") => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
+  const requestVersion = useRef(0);
 
   const fetchMovies = useCallback(async (pageNum = 1, append = false, isCurrent = () => true) => {
     const cacheKey = `${apiPath}_${queryTerm}_${pageNum}`;
@@ -48,22 +49,23 @@ export const useFetch = (apiPath, queryTerm = "") => {
   }, [apiPath, queryTerm]);
 
   useEffect(() => {
-    let cancelled = false;
+    const version = ++requestVersion.current;
     setData([]);
     setPage(1);
     setHasMore(true);
-    fetchMovies(1, false, () => !cancelled);
+    fetchMovies(1, false, () => requestVersion.current === version);
 
     return () => {
-      cancelled = true;
+      requestVersion.current += 1;
     };
   }, [apiPath, queryTerm, fetchMovies]);
 
   const loadMore = () => {
     if (!loading && hasMore) {
       const nextPage = page + 1;
+      const version = requestVersion.current;
       setPage(nextPage);
-      fetchMovies(nextPage, true);
+      fetchMovies(nextPage, true, () => requestVersion.current === version);
     }
   };
 
