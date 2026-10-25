@@ -22,6 +22,7 @@ export const useFetch = (apiPath, queryTerm = "") => {
         setData(cachedData.results);
       }
       setHasMore(pageNum < cachedData.total_pages);
+      setLoading(false);
       return;
     }
 
